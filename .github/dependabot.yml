@@ -1,77 +1,91 @@
 version: 2
+
 updates:
-  # GitHub Actions
-  - package-ecosystem: github-actions
-    directory: /
+  # Frontend npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/frontend"
     schedule:
-      interval: "monthly"
-    cooldown:
-      default-days: 7
-    commit-message:
-      prefix: ⬆
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Helsinki"
+    open-pull-requests-limit: 10
     labels:
-      - "internal"
       - "dependencies"
-      - "github_actions"
+      - "frontend"
     groups:
-      github-actions:
+      npm-minor-patch:
+        applies-to: version-updates
         patterns:
           - "*"
-  # Python uv
-  - package-ecosystem: uv
-    directory: /
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Backend Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/backend"
     schedule:
-      interval: "monthly"
-    cooldown:
-      default-days: 7
-    commit-message:
-      prefix: ⬆
-    labels: [dependencies, internal]
+      interval: "weekly"
+      day: "monday"
+      time: "09:15"
+      timezone: "Europe/Helsinki"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "backend"
     groups:
-      python-packages:
+      pip-minor-patch:
+        applies-to: version-updates
         patterns:
           - "*"
-  # bun
-  - package-ecosystem: bun
-    directory: /
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Backend Dockerfile
+  - package-ecosystem: "docker"
+    directory: "/backend"
     schedule:
-      interval: "monthly"
-    cooldown:
-      default-days: 7
-    commit-message:
-      prefix: ⬆
-    labels: [dependencies, internal]
-    ignore:
-      - dependency-name: "@hey-api/openapi-ts"
-    groups:
-      npm-packages:
-        patterns:
-          - "*"
-  # Docker
-  - package-ecosystem: docker
-    directories:
-      - /backend
-      - /frontend
+      interval: "weekly"
+      day: "monday"
+      time: "09:30"
+      timezone: "Europe/Helsinki"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "docker"
+
+  # Frontend Dockerfile
+  - package-ecosystem: "docker"
+    directory: "/frontend"
     schedule:
-      interval: "monthly"
-    cooldown:
-      default-days: 7
-    commit-message:
-      prefix: ⬆
-    groups:
-      docker:
-        patterns:
-          - "*"
-  # Docker Compose
-  - package-ecosystem: docker-compose
-    directory: /
+      interval: "weekly"
+      day: "monday"
+      time: "09:45"
+      timezone: "Europe/Helsinki"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "docker"
+
+  # SHA-pinned GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: "monthly"
-    cooldown:
-      default-days: 7
-    commit-message:
-      prefix: ⬆
+      interval: "weekly"
+      day: "monday"
+      time: "10:00"
+      timezone: "Europe/Helsinki"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
     groups:
-      docker-compose:
+      actions-minor-patch:
+        applies-to: version-updates
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
